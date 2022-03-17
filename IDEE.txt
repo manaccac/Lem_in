@@ -1,0 +1,11 @@
+du coup idde mettre une note a chaqu'une de pieces en fonction du nombre de tour a jouer avent d'arriver a la fin
+
+idee suivante si un mec se dirige vers le chemins optimisé
+et que l'autre attend il faudra mettre une variable en mode int attente ++ donc l attente passe a +N les chemins pris donc si le le chemin pris et a 1 de base il passe
+a 1 + n
+donc il sera aussi rapide de prendre le 2 si il nest pas pris si il est pris juste on passe notre tour
+
+
+Pour cree cette map de chaleur il faut partir du end et de mettre a 1 toute les room adjacent ensuite mettre a 2 les room adjacent sauf celle qui sont deja a un chiffre etc
+
+FAIRE UNE LISTE DES ROOM DONE pour le heat point
