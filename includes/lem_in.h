@@ -14,6 +14,8 @@ typedef struct		s_room
 	int posX;
 	int posY;
 
+	int index; // pour savoir ou il se trouve dans la map
+
 	int room_nbPipes; // a initialliser a 0
 
 	char *name;	// a mettre en dinamique

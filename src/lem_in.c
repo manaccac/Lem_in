@@ -64,18 +64,24 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 		}
 		else {
 			j = 0;
+			// printf("i %d\n", i);
 			while (j < map->room[done_index[i]].room_nbPipes)
 			{
+				// printf("i %d\n", );
+				// printf("name = %s nbpipe = %d\n", map->room[done_index[i]].name ,map->room[done_index[i]].room_nbPipes);
 				// dprintf(1, "%d ===== %s\n", map->room[done_index[i]].room_nbPipes, map->room[done_index[i]].name);
 				// dprintf(1, "index	%d\n", done_index[i]);
+				// dprintf(1, "index	%s\n", map->room[0].name);
 				y = 0;
 				while (y < map->nbRoom){
 					if (ft_strcmp(map->room[done_index[i]].room_pipes[j], map->room[y].name) == 0){
-						map->room[y].heat_point = map->room[done_index[i]].heat_point + 1;
-						done_name[nb_done] = map->room[y].name;
-						done_index[nb_done] = j;
-						nb_done++;
-						break ;
+						if (map->room[y].heat_point == 0) {
+							map->room[y].heat_point = map->room[done_index[i]].heat_point + 1;
+							done_name[nb_done] = map->room[y].name;
+							done_index[nb_done] = map->room[y].index;
+							nb_done++;
+							break ;
+						}
 					}
 					y++;
 				}
@@ -89,7 +95,17 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 		i++;
 	}
 
-	//fin test
+
+	//fin test 
+
+	// printf("%d\n", map->room[0].room_nbPipes);
+	// printf("%s = %s\n",map->room[0].room_pipes[4], map->room[6].name);
+
+	i = 0;
+	while (i < nb_done){
+		// dprintf(1, "%s\n", map->room[done_index[i]].name);
+		i++;
+	}
 
 	while(i < map->nbRoom){
 		j = 0;
@@ -353,6 +369,7 @@ int main()
 					map.room[other_room_nb].name = tmp[0];
 					map.room[other_room_nb].posX = ft_atoi(tmp[1]);
 					map.room[other_room_nb].posY = ft_atoi(tmp[2]);
+					map.room[other_room_nb].index = other_room_nb;
 					free(tmp);
 					other_room_nb++;		
 					}
