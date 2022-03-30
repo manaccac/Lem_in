@@ -20,12 +20,15 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 	int j;
 
 	int nb_done;
-	char *done_name[100]; // a voir comment faire pour ne pas a avoir a mettre comme ca
+	char **done_name; // a voir comment faire pour ne pas a avoir a mettre comme ca
 	int *done_index;
 
 	i = 0;
 	nb_done = 0;
-	// done_name = malloc(sizeof(char *) + map->nbRoom + 2);
+	int tmp;
+	tmp = 0;
+	done_name = malloc(1);// a changer
+	
 	done_index = malloc(sizeof(int *) + map->nbRoom + 2);
 
 	while(i != map->room_end.room_nbPipes){
@@ -132,10 +135,9 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 
 	i = 0;
 	while (i != map->nbRoom){
-		printf("room name = %s = %d\n", map->room[i].name, map->room[i].heat_point);
+		printf("room name= %s = %d\n", map->room[i].name, map->room[i].heat_point);
 		i++;
 	}
-
 	// free(done_name);
 	free(done_index);
 }
@@ -298,8 +300,8 @@ int ft_verif_room(char *room){
 int main()
 {
 	char *buf;
-	buf = malloc(10000);
-	read(0, buf, 10000);
+	buf = malloc(1000000);
+	read(0, buf, 1000000);
 
 	char **map_cut;
 	map_cut = ft_split(buf, '\n');
@@ -312,6 +314,8 @@ int main()
 
 	t_mapping map;
 	char **tmp;
+	// map.room = malloc(10);
+	map.room = malloc(sizeof(t_room) * 100000 + 1);
 
 	while (map_cut[i])
 	{
@@ -321,6 +325,14 @@ int main()
 			part++;
 		}
 		else if (part == 2) {
+			while((map_cut[i] && map_cut[i][0] == '#'))
+			{
+				if (ft_strncmp(map_cut[i], "##start", 7) == 0)
+					break;
+				else if (ft_strncmp(map_cut[i], "##end", 5) == 0)
+					break;
+				i++;
+			}
 			if (ft_strncmp(map_cut[i], "##start", 7) == 0){
 				i++;
 				while(map_cut[i] && map_cut[i][0] == '#')
@@ -357,8 +369,6 @@ int main()
 			}
 			else
 			{
-				while(map_cut[i] && map_cut[i][0] == '#')
-					i++;
 				if (!map_cut[i])
 					break;
 				if (ft_verif_room(map_cut[i]) == 1){
@@ -371,7 +381,7 @@ int main()
 					map.room[other_room_nb].posY = ft_atoi(tmp[2]);
 					map.room[other_room_nb].index = other_room_nb;
 					free(tmp);
-					other_room_nb++;		
+					other_room_nb++;
 					}
 				else{
 					map.nbRoom = other_room_nb;

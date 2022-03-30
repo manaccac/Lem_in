@@ -19,7 +19,7 @@ typedef struct		s_room
 	int room_nbPipes; // a initialliser a 0
 
 	char *name;	// a mettre en dinamique
-	char *room_pipes[100];
+	char *room_pipes[1000];
 
 	int heat_point;
 	
@@ -35,7 +35,7 @@ typedef struct		s_end
 	int heat_point;
 
 	char *name;	// a mettre en dinamique
-	char *room_pipes[100];
+	char *room_pipes[1000];
 	
 	bool hold;
 }					t_end;
@@ -49,7 +49,7 @@ typedef struct		s_start
 	int heat_point;
 
 	char *name;	// a mettre en dinamique
-	char *room_pipes[100];
+	char *room_pipes[1000];
 	
 	bool hold;
 }					t_start;
@@ -64,14 +64,15 @@ typedef struct		s_mapping
 	char *start; // a mettre en dinamique
 	char *end;// a mettre en dinamique
 
-	char *roomName[100];// a mettre en dinamique
+	char *roomName[10000];// a mettre en dinamique
 
-	char *map[100];// a mettre en dinamique
-	char *pipes[100];// a mettre en dinamique
+
+	char *map[10000];// a mettre en dinamique
+	char *pipes[100000];// a mettre en dinamique
 
 	char *resolve[100];// a mettre en dinamique
 
-	t_room		room[100];// a mettre en dinamique
+	t_room		*room; //room[300];// a mettre en dinamique
 	t_end		room_end;
 	t_start		room_start;
 }					t_mapping;
