@@ -45,7 +45,7 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 				if (ft_strcmp(map->room_end.room_pipes[i],map->room[j].name) == 0){
 					map->room[j].heat_point++;
 					done_name[nb_done] = map->room[j].name;
-					done_index[nb_done] = j;
+					done_index[nb_done] = map->room[j].index;
 					nb_done++;
 					break ;
 				}
@@ -60,7 +60,8 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 
 	//test
 	int y;
-	while(nb_done < map->nbRoom && done_name[i]){
+	int start_find = 0;
+	while(nb_done + start_find < map->nbRoom + 1 && done_name[i]){
 		// faire un truc en mode du debut de index done a la fin et quand on done on en met un a la fin
 		if (ft_strcmp(done_name[i], map->room_start.name) == 0 || ft_strcmp(done_name[i], map->room_end.name) == 0){
 			;
@@ -77,8 +78,20 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 				// dprintf(1, "index	%s\n", map->room[0].name);
 				y = 0;
 				while (y < map->nbRoom){
+					if (ft_strcmp(map->room[done_index[i]].room_pipes[j], map->room_start.name) == 0){
+						if (map->room_start.heat_point != 0 && map->room_start.heat_point > map->room[done_index[i]].heat_point + 1)
+							map->room_start.heat_point = map->room[done_index[i]].heat_point + 1;
+						else if (map->room_start.heat_point == 0) {
+							map->room_start.heat_point = map->room[done_index[i]].heat_point + 1;
+							start_find++;
+						}
+					}
 					if (ft_strcmp(map->room[done_index[i]].room_pipes[j], map->room[y].name) == 0){
-						if (map->room[y].heat_point == 0) {
+						if (map->room[y].heat_point != 0 && map->room[y].heat_point > map->room[done_index[i]].heat_point + 1)
+							map->room[y].heat_point = map->room[done_index[i]].heat_point + 1;
+						if (map->room[y].heat_point == 0) { // a mettre un if le nouveau heat point et plus bas alors on remplace juste le heat point
+							if (map->room[y].room_nbPipes == 1)
+								map->room[y].deadlock = true;
 							map->room[y].heat_point = map->room[done_index[i]].heat_point + 1;
 							done_name[nb_done] = map->room[y].name;
 							done_index[nb_done] = map->room[y].index;
@@ -98,7 +111,6 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 		}
 		i++;
 	}
-
 
 	//fin test 
 
@@ -135,10 +147,19 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 	// }
 
 	i = 0;
+	int nb_impasse = 0;
 	while (i != map->nbRoom){
-		printf("room name= %s = %d\n", map->room[i].name, map->room[i].heat_point);
+		if (map->room[i].deadlock == true){
+			printf("[room name= %s] [heatpoint = %d] [impasse = %d]\n", map->room[i].name, map->room[i].heat_point ,map->room[i].deadlock);
+			nb_impasse++;
+		}
+		else{
+			printf("room name= %s heatpoint = %d\n", map->room[i].name, map->room[i].heat_point);
+		}
 		i++;
 	}
+	printf("\n\nnb room = %d nb impasse = %d\n", map->nbRoom, nb_impasse);
+	printf("start room = %s nb heat = %d\n", map->room_start.name, map->room_start.heat_point);
 	free(done_name);
 	free(done_index);
 }

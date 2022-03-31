@@ -22,6 +22,8 @@ typedef struct		s_room
 	char *room_pipes[1000];
 
 	int heat_point;
+
+	bool deadlock;
 	
 	bool hold;
 }					t_room;
