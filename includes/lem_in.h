@@ -31,6 +31,8 @@ typedef struct		s_end
 	int posX;
 	int posY;
 	
+	int index; // pour savoir ou il se trouve dans la map
+
 	int room_nbPipes; // a initialliser a 0
 	int heat_point;
 
@@ -45,6 +47,8 @@ typedef struct		s_start
 	int posX;
 	int posY;
 
+	int index; // pour savoir ou il se trouve dans la map
+	
 	int room_nbPipes; // a initialliser a 0
 	int heat_point;
 
@@ -54,12 +58,25 @@ typedef struct		s_start
 	bool hold;
 }					t_start;
 
+typedef struct s_Ants
+{
+	bool 	end;
+
+	char 	*in_room;
+	int		room_index;
+
+
+
+}					t_Ants;
+
 
 typedef struct		s_mapping
 {
 	int ants;
 	int nbRoom;
 	int nbPipe;
+
+	int Ants_finish;
 
 	char *start; // a mettre en dinamique
 	char *end;// a mettre en dinamique
@@ -70,7 +87,7 @@ typedef struct		s_mapping
 	char *map[10000];// a mettre en dinamique
 	char *pipes[100000];// a mettre en dinamique
 
-	char *resolve[100];// a mettre en dinamique
+	// char *resolve[100];// a mettre en dinamique
 
 	t_room		*room; //room[300];// a mettre en dinamique
 	t_end		room_end;

@@ -27,9 +27,9 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 	nb_done = 0;
 	int tmp;
 	tmp = 0;
-	done_name = malloc(1);// a changer
+	done_name = malloc(1000000000);// a changer
 	
-	done_index = malloc(sizeof(int *) + map->nbRoom + 2);
+	done_index = malloc(sizeof(int *) + map->nbRoom * 4);
 
 	while(i != map->room_end.room_nbPipes){
 		// printf("pipe de la room end %s = %s\n", map->room_end.name, map->room_end.room_pipes[i]);
@@ -52,15 +52,15 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 				j++;
 			}
 		}
+
 		
 		i++;
 	}
 	i = 0;
 
 	//test
-
 	int y;
-	while(nb_done < map->nbRoom){
+	while(nb_done < map->nbRoom && done_name[i]){
 		// faire un truc en mode du debut de index done a la fin et quand on done on en met un a la fin
 		if (ft_strcmp(done_name[i], map->room_start.name) == 0 || ft_strcmp(done_name[i], map->room_end.name) == 0){
 			;
@@ -89,6 +89,7 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 					y++;
 				}
 				// dprintf(1, "seg?\n");
+				// dprintf(1, "index	%d\n", nb_done);
 				// dprintf(1, "index	%d\n", done_index[i]);
 				// dprintf(1, "nb_done	%d\n", map->room[done_index[i]].room_nbPipes);
 				// dprintf(1, "seg?\n");
@@ -128,17 +129,17 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 	//test map de heat
 	i = 0;
 
-	while(i != nb_done){
-		// printf("done = %s\n", done_name[i]);
-		i++;
-	}
+	// while(i != nb_done){
+	// 	// printf("done = %s\n", done_name[i]);
+	// 	i++;
+	// }
 
 	i = 0;
 	while (i != map->nbRoom){
 		printf("room name= %s = %d\n", map->room[i].name, map->room[i].heat_point);
 		i++;
 	}
-	// free(done_name);
+	free(done_name);
 	free(done_index);
 }
 
@@ -347,6 +348,7 @@ int main()
 					map.room_start.heat_point = 0;
 					map.room_start.posX = ft_atoi(tmp[1]);
 					map.room_start.posY = ft_atoi(tmp[2]);
+					map.room_start.index = other_room_nb;
 					free(tmp);
 				}
 			}
@@ -364,6 +366,7 @@ int main()
 					map.room_end.name = tmp[0];
 					map.room_end.posX = ft_atoi(tmp[1]);
 					map.room_end.posY = ft_atoi(tmp[2]);
+					map.room_end.index = other_room_nb;
 					free(tmp);
 					}
 			}

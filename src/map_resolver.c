@@ -5,7 +5,7 @@ void ft_resolve(t_mapping *map){
 
 	int i;
 	i = 0; 
-	// while(i != map->nbPipe){
+	// while(map->Ants_finish != map->ants){
 	// 	i++;
 	// }
 
