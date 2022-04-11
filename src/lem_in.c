@@ -92,6 +92,7 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 						if (map->room[y].heat_point == 0) { // a mettre un if le nouveau heat point et plus bas alors on remplace juste le heat point
 							if (map->room[y].room_nbPipes == 1)
 								map->room[y].deadlock = true;
+							if (map->room[done_index[i]].heat_point + 1 + map->ants > map->room_start.heat_point) // si la room et trop eloignee
 							map->room[y].heat_point = map->room[done_index[i]].heat_point + 1;
 							done_name[nb_done] = map->room[y].name;
 							done_index[nb_done] = map->room[y].index;
@@ -118,24 +119,24 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 	// printf("%s = %s\n",map->room[0].room_pipes[4], map->room[6].name);
 
 	i = 0;
-	while (i < nb_done){
-		// dprintf(1, "%s\n", map->room[done_index[i]].name);
-		i++;
-	}
+	// while (i < nb_done){
+	// 	// dprintf(1, "%s\n", map->room[done_index[i]].name);
+	// 	i++;
+	// }
 
-	while(i < map->nbRoom){
-		j = 0;
-		while(j != map->room[i].room_nbPipes){
-			// printf("pipe de la room %s = %s\n", map->room[i].name, map->room[i].room_pipes[j]);
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	while(i != map->room_start.room_nbPipes){
-		// printf("pipe de la room start %s = %s\n", map->room_start.name, map->room_start.room_pipes[i]);
-		i++;
-	}
+	// while(i < map->nbRoom){
+	// 	j = 0;
+	// 	while(j != map->room[i].room_nbPipes){
+	// 		// printf("pipe de la room %s = %s\n", map->room[i].name, map->room[i].room_pipes[j]);
+	// 		j++;
+	// 	}
+	// 	i++;
+	// }
+	// i = 0;
+	// while(i != map->room_start.room_nbPipes){
+	// 	// printf("pipe de la room start %s = %s\n", map->room_start.name, map->room_start.room_pipes[i]);
+	// 	i++;
+	// }
 
 
 	//test map de heat
@@ -168,6 +169,10 @@ void ft_setPipe(t_mapping *map){
 	int i;
 	int j;
 	int y;
+
+	int test = 0; // test pour index avec les pipes
+	int j_tmp = 0; // pareil
+
 	char **tmp;
 
 	y = 0;
@@ -178,12 +183,27 @@ void ft_setPipe(t_mapping *map){
 		j = 0;
 			while(map->roomName[y] && j != 2){
 				if (ft_strcmp(map->room_start.name, tmp[j]) == 0) {
-					// dprintf(1, "start %s = %s\n", map->room_start.name, tmp[j]);
+					// dprintf(1, "start %s = %s\n", map->roomName[y], tmp[j]);
 					if (j == 1){
 						map->room_start.room_pipes[map->room_start.room_nbPipes] = tmp[0];
+						j_tmp = 0;
 					}
-					else
+					else {
 						map->room_start.room_pipes[map->room_start.room_nbPipes] = tmp[1];
+						j_tmp = 1;
+					}
+					while (test < map->nbRoom){
+						if (ft_strcmp(tmp[j_tmp], map->room_end.name) == 0){
+							map->room_start.room_index[map->room_start.room_nbPipes] = map->room_end.index;
+							break;
+						}
+						if (ft_strcmp(tmp[j_tmp], map->room[test].name) == 0){
+							map->room_start.room_index[map->room_start.room_nbPipes] = map->room[test].index;
+							break;
+						}
+						test++;
+					}
+					test = 0;
 					j++;
 					map->room_start.room_nbPipes++;
 					y = -1;
@@ -192,9 +212,24 @@ void ft_setPipe(t_mapping *map){
 					// dprintf(1, "end %s = %s\n", map->room_end.name, tmp[j]);
 					if (j == 1){
 						map->room_end.room_pipes[map->room_end.room_nbPipes] = tmp[0];
+						j_tmp = 0;
 					}
-					else
+					else{
 						map->room_end.room_pipes[map->room_end.room_nbPipes] = tmp[1];
+						j_tmp = 1;
+					}
+					while (test < map->nbRoom){
+						if (ft_strcmp(tmp[j_tmp], map->room_start.name) == 0){
+							map->room_end.room_index[map->room_end.room_nbPipes] = map->room_start.index;
+							break;
+						}
+						if (ft_strcmp(tmp[j_tmp], map->room[test].name) == 0){
+							map->room_end.room_index[map->room_end.room_nbPipes] = map->room[test].index;
+							break;
+						}
+						test++;
+					}
+					test = 0;
 					j++;
 					map->room_end.room_nbPipes++;
 					y = -1;
@@ -203,9 +238,28 @@ void ft_setPipe(t_mapping *map){
 					// dprintf(1, "room %s = %s\n", map->room[y].name, tmp[j]);
 					if (j == 1){
 						map->room[y].room_pipes[map->room[y].room_nbPipes] = tmp[0];
+						j_tmp = 0;
 					}
-					else
+					else{
 						map->room[y].room_pipes[map->room[y].room_nbPipes] = tmp[1];
+						j_tmp = 1;
+					}
+					while (test < map->nbRoom){
+						if (ft_strcmp(tmp[j_tmp], map->room_start.name) == 0){
+							map->room[y].room_index[map->room[y].room_nbPipes] = map->room_start.index;
+							break;
+						}
+						if (ft_strcmp(tmp[j_tmp], map->room_end.name) == 0){
+							map->room[y].room_index[map->room[y].room_nbPipes] = map->room_end.index;
+							break;
+						}
+						if (ft_strcmp(tmp[j_tmp], map->room[test].name) == 0){
+							map->room[y].room_index[map->room[y].room_nbPipes] = map->room[test].index;
+							break;
+						}
+						test++;
+					}
+					test = 0;
 					j++;
 					map->room[y].room_nbPipes++;
 					y = -1;
@@ -450,7 +504,9 @@ int main()
 	// 	test++;
 	// }
 
-	ft_heat_map(&map);
+
+	// ft_heat_map(&map);
+	ft_breath(&map);
 
 
 	ft_resolve(&map);

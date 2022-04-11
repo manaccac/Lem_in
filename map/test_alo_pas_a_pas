@@ -1,0 +1,34 @@
+il y a 7 fourmis nomée de F0 à F7
+
+la map
+room name= 0 heatpoint = 1
+room name= 1 heatpoint = 1
+room name= 2 heatpoint = 2
+room name= 3 heatpoint = 3
+room name= 4 heatpoint = 6
+room name= 5 heatpoint = 5
+room name= 6 heatpoint = 5
+room name= 7 heatpoint = 4
+start room = start nb heat = 2
+
+
+Tour:	1		2		3		4		5		6		7
+Room
+F0		0		E		E		E		E		E		E
+F1		-		0		E		E		E		E		E
+F2		3		2		1		E		E		E		E
+F3		-		-		0		E		E		E		E
+F4		-		3		2		1		E		E		E
+F5		4		5		7		3		2		1		E
+F6		-		-		-		0		E		E		E
+
+Tour:	1		2		3		4		5		6		7
+Room
+F0		0		E		E		E		E		E
+F1		-		0		E		E		E		E
+F2		3		2		1		E		E		E
+F3		-		3		2		1		E		E
+F4		-		-		0		E		E		E
+F5		-		-		3		2		1		E
+F6		-		-		-		0		E		E
+

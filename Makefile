@@ -10,7 +10,7 @@ LIBS        =                    libft/libft.a
 
 SRC_PATH    =                    src
 
-SRCS_NAME    =	lem_in.c map_resolver.c\
+SRCS_NAME    =	lem_in.c map_resolver.c ft_breath.c\
 
 
 OBJS        =                     ${SRCS:.c=.o}

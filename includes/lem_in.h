@@ -8,6 +8,12 @@
 # include <stdbool.h>
 # include "../libft/libft.h"
 
+typedef struct		s_path
+{
+	int		nb_moves;
+	char	*road[10000];
+	
+}				t_path;
 
 typedef struct		s_room
 {
@@ -20,6 +26,7 @@ typedef struct		s_room
 
 	char *name;	// a mettre en dinamique
 	char *room_pipes[1000];
+	int room_index[1000];
 
 	int heat_point;
 
@@ -40,6 +47,7 @@ typedef struct		s_end
 
 	char *name;	// a mettre en dinamique
 	char *room_pipes[1000];
+	int room_index[1000];
 	
 	bool hold;
 }					t_end;
@@ -56,6 +64,7 @@ typedef struct		s_start
 
 	char *name;	// a mettre en dinamique
 	char *room_pipes[1000];
+	int room_index[1000];
 	
 	bool hold;
 }					t_start;
@@ -97,5 +106,6 @@ typedef struct		s_mapping
 }					t_mapping;
 
 void 			ft_resolve(t_mapping *map);
+void 			ft_breath(t_mapping *map);
 
 #endif
