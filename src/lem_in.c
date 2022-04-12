@@ -160,7 +160,7 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 		i++;
 	}
 	printf("\n\nnb room = %d nb impasse = %d\n", map->nbRoom, nb_impasse);
-	printf("start room = %s nb heat = %d\n", map->room_start.name, map->room_start.heat_point);
+	printf("start room = %s nb heat = %d\n\n", map->room_start.name, map->room_start.heat_point);
 	free(done_name);
 	free(done_index);
 }
@@ -458,6 +458,7 @@ int main()
 					map.room[other_room_nb].posX = ft_atoi(tmp[1]);
 					map.room[other_room_nb].posY = ft_atoi(tmp[2]);
 					map.room[other_room_nb].index = other_room_nb;
+					map.room[other_room_nb].hold = false;
 					free(tmp);
 					other_room_nb++;
 					}
@@ -505,7 +506,7 @@ int main()
 	// }
 
 
-	// ft_heat_map(&map);
+	ft_heat_map(&map);
 	ft_breath(&map);
 
 
