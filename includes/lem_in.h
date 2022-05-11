@@ -26,6 +26,7 @@ typedef struct		s_room
 	bool deadlock;
 	
 	bool hold;
+	bool take;
 }					t_room;
 
 
