@@ -12,9 +12,6 @@ import networkx as nx
 import matplotlib.pyplot as plot
 
 def main():
-    def getEdge(line):
-        data = line.split('-') #split string into a list
-        G.add_edge(int(data[0]), int(data[1]))
 
     def init():
         filepath = '/tmp/lemin_result.txt'
@@ -23,7 +20,8 @@ def main():
             while line:
                 line = line.rstrip('\n')
                 if line.find('-') >= 0 :
-                    getEdge(line)
+                    data = line.split('-')
+                    G.add_edge(int(data[0]), int(data[1]))
                 line = fp.readline()
 
     def drawNetwork():
