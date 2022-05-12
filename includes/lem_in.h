@@ -34,8 +34,13 @@ typedef struct		s_path
 {
 	bool done;
 	int		nb_moves;
+
+	int		taille_chemin;
+
 	char	*road[1000];
 	int		index_road[1000];
+
+	int		path_nb_wait;
 }					t_path;
 
 typedef struct		s_end
@@ -78,8 +83,10 @@ typedef struct s_ants
 
 	int		path_index;//Chemin choisi
 
+	int		nb_wait;
+
 	char 	*in_room;
-	int		room_index;
+	int		room_move; // pour le move savoir ou on en est et on l'augmente de 1 a chaque avancement
 
 }					t_ants;
 

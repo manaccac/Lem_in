@@ -22,7 +22,9 @@ void ft_reset_path(t_mapping *map){
 			j++;
 		}
 		map->path[i].done = false;
+		map->path[i].taille_chemin = 0;
 		map->path[i].nb_moves = 0;
+		map->path[i].path_nb_wait = 0;
 		i++;
 	}
 }
@@ -142,6 +144,7 @@ void 	ft_breath(t_mapping *map){
 	i = 0;
 	while (map->room_start.room_nbPipes > i)
 	{
+		map->path[i].taille_chemin = map->path[i].nb_moves;
 		printf("done = %d taille chemin = %d\n", map->path[i].done, map->path[i].nb_moves);
 		i++;
 	}
