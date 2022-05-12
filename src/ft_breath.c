@@ -14,11 +14,11 @@ void ft_reset_path(t_mapping *map){
 	int i = 0;
 	int j = 0;
 	while(i < map->room_start.room_nbPipes){
-		j = 0;
+		j = 1;
 		while (j < map->path[i].nb_moves)
 		{
 			map->path[i].index_road[j] = '\0';
-			map->path[i].index_road[j] = '\0';
+			map->path[i].road[j] = "\0";
 			j++;
 		}
 		map->path[i].done = false;
@@ -77,6 +77,8 @@ void 	ft_breath(t_mapping *map){
 			min_heat = 2147483647;
 			index_min_heat = 2147483647;
 			// printf("name	=	%s\n", map->room[map->path[j].index_road[i]].name);
+			// if (j == 0)
+			// 	printf("[%s]\n\n", map->room[map->path[j].index_road[i]].room_pipes[y]);
 			while (map->path[j].done != true && map->room[map->path[j].index_road[i]].room_nbPipes > y) // tant qu'il y a des pipe je cherhce le moins chaud
 			{
 				if (ft_strcmp2(map->room[map->path[j].index_road[i]].room_pipes[y], map->room_start.name) == 0)
@@ -95,36 +97,33 @@ void 	ft_breath(t_mapping *map){
 					// printf("H_room	=	%d\n", map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point);
 					if (map->room[map->room[map->path[j].index_road[i]].room_index[y]].take == true)
 						;
+					else if (map->room[map->room[map->path[j].index_road[i]].room_index[y]].hold == true && map->room[map->path[j].index_road[i]].room_nbPipes != 2)
+						;
 					else if (min_heat > map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point){
 						if (map->room[map->room[map->path[j].index_road[i]].room_index[y]].hold == true)
 							go_hold_room = true;
 						min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point;
 						index_min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].index;
 					}
-					if (go_hold_room == true && map->room[map->room[map->path[j].index_road[i]].room_index[y]].hold == false &&
-					map->path[j].nb_moves + map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point <=  min_heat + map->ants){ // si le nombre de move deja fait + le heat point de la map et plus petit ou egale au nombre de fourmis alors on le choisi
-						printf("dans la consition de pas hold\n");
-						go_hold_room = false;
-						min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point;
-						index_min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].index;
-					}
+					// if (go_hold_room == true && map->room[map->room[map->path[j].index_road[i]].room_index[y]].hold == false &&
+					// map->path[j].nb_moves + map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point <=  min_heat + map->ants){ // si le nombre de move deja fait + le heat point de la map et plus petit ou egale au nombre de fourmis alors on le choisi
+					// 	printf("dans la consition de pas hold\n");
+					// 	go_hold_room = false;
+					// 	min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point;
+					// 	index_min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].index;
+					// }
 				}
 				y++;
 			}
 			if (min_heat == 2147483647 && map->path[j].done != true){
 				// printf("BLOQUER\n");
-				// printf("avent resert = %d\n", map->path[j].nb_moves);
 				ft_reset_path(map);
 				ft_reset_map(map);
-				// printf("reset good ? = %d\n", map->path[j].nb_moves);
-				// un ft_reset pour remettre tous les index_road et road a 0 avec les nb_moves a 0 ...
-				// nb_done a 0
-				// i a -1 vue qu'il ++ apres j et y a 0 et tu break pour qu'il passe ce while 
-				// nb_done++;
 				nb_done = 0;
 				i = -1;
 				j = 0;
 				y = 0;
+				break;
 			}
 			else if (map->path[j].done != true) {
 				if (index_min_heat != 2147483647){
@@ -132,6 +131,7 @@ void 	ft_breath(t_mapping *map){
 					map->room[index_min_heat].hold = true;
 					map->room[index_min_heat].take = true;
 					map->path[j].nb_moves++;
+					// printf("HELO         22222 %d\n", map->path[j].nb_moves);
 				}
 			}
 			j++;

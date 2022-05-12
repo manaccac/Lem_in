@@ -151,11 +151,11 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 	int nb_impasse = 0;
 	while (i != map->nbRoom){
 		if (map->room[i].deadlock == true){
-			printf("[room name= %s] [heatpoint = %d] [impasse = %d]\n", map->room[i].name, map->room[i].heat_point ,map->room[i].deadlock);
+			// printf("[room name= %s] [heatpoint = %d] [impasse = %d]\n", map->room[i].name, map->room[i].heat_point ,map->room[i].deadlock);
 			nb_impasse++;
 		}
 		else{
-			printf("room name= %s heatpoint = %d\n", map->room[i].name, map->room[i].heat_point);
+			// printf("room name= %s heatpoint = %d\n", map->room[i].name, map->room[i].heat_point);
 		}
 		i++;
 	}
