@@ -50,7 +50,6 @@ void 	ft_breath(t_mapping *map){
 
 	while (map->room_start.room_nbPipes > i)
 	{
-		printf("index = %d name = %s\n", map->room_start.room_index[i], map->room_start.room_pipes[i]);
 		map->path[i].road[0] = map->room_start.room_pipes[i];
 		// map->room[map->room_start.room_index[i]].hold = true;
 		map->path[i].index_road[0] = map->room_start.room_index[i];
@@ -106,7 +105,7 @@ void 	ft_breath(t_mapping *map){
 						index_min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].index;
 					}
 					// if (go_hold_room == true && map->room[map->room[map->path[j].index_road[i]].room_index[y]].hold == false &&
-					// map->path[j].nb_moves + map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point <=  min_heat + map->ants){ // si le nombre de move deja fait + le heat point de la map et plus petit ou egale au nombre de fourmis alors on le choisi
+					// map->path[j].nb_moves + map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point <=  min_heat + map->nb_ants){ // si le nombre de move deja fait + le heat point de la map et plus petit ou egale au nombre de fourmis alors on le choisi
 					// 	printf("dans la consition de pas hold\n");
 					// 	go_hold_room = false;
 					// 	min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point;
@@ -131,7 +130,6 @@ void 	ft_breath(t_mapping *map){
 					map->room[index_min_heat].hold = true;
 					map->room[index_min_heat].take = true;
 					map->path[j].nb_moves++;
-					// printf("HELO         22222 %d\n", map->path[j].nb_moves);
 				}
 			}
 			j++;
@@ -140,7 +138,7 @@ void 	ft_breath(t_mapping *map){
 
 	}
 
-	// affichage 
+	// // affichage 
 	i = 0;
 	while (map->room_start.room_nbPipes > i)
 	{
@@ -148,20 +146,20 @@ void 	ft_breath(t_mapping *map){
 		i++;
 	}
 	
-	i = 0;
-	j = 0;
-	while (map->room_start.room_nbPipes > i)
-	{
-		j = 0;
-		if (map->path[i].done == true){
-			printf("taille chemin = %d\n", map->path[i].nb_moves);
-			printf("[[chemin %d]]\n", i);
-			while (j < map->path[i].nb_moves)
-			{
-				printf("	[room = %s]\n", map->room[map->path[i].index_road[j]].name);
-				j++;
-			}
-		}
-		i++;
-	}
+	// i = 0;
+	// j = 0;
+	// while (map->room_start.room_nbPipes > i)
+	// {
+	// 	j = 0;
+	// 	if (map->path[i].done == true){
+	// 		printf("taille chemin = %d\n", map->path[i].nb_moves);
+	// 		printf("[[chemin %d]]\n", i);
+	// 		while (j < map->path[i].nb_moves)
+	// 		{
+	// 			printf("	[room = %s]\n", map->room[map->path[i].index_road[j]].name);
+	// 			j++;
+	// 		}
+	// 	}
+	// 	i++;
+	// }
 }

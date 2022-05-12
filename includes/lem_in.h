@@ -72,21 +72,21 @@ typedef struct		s_start
 	bool hold;
 }					t_start;
 
-typedef struct s_Ants
+typedef struct s_ants
 {
 	bool 	end;
+
+	int		path_index;//Chemin choisi
 
 	char 	*in_room;
 	int		room_index;
 
-
-
-}					t_Ants;
+}					t_ants;
 
 
 typedef struct		s_mapping
 {
-	int ants;
+	int nb_ants;
 	int nbRoom;
 	int nbPipe;
 
@@ -107,6 +107,7 @@ typedef struct		s_mapping
 	t_end		room_end;
 	t_start		room_start;
 	t_path		*path;// a mettre en dinamique
+	t_ants		*ants;
 
 }					t_mapping;
 

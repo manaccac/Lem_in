@@ -92,7 +92,7 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 						if (map->room[y].heat_point == 0) { // a mettre un if le nouveau heat point et plus bas alors on remplace juste le heat point
 							if (map->room[y].room_nbPipes == 1)
 								map->room[y].deadlock = true;
-							if (map->room[done_index[i]].heat_point + 1 + map->ants > map->room_start.heat_point) // si la room et trop eloignee
+							if (map->room[done_index[i]].heat_point + 1 + map->nb_ants > map->room_start.heat_point) // si la room et trop eloignee
 							map->room[y].heat_point = map->room[done_index[i]].heat_point + 1;
 							done_name[nb_done] = map->room[y].name;
 							done_index[nb_done] = map->room[y].index;
@@ -397,7 +397,7 @@ int main()
 	{
 		if (part == 1 && (map_cut[i][0] >= '0' && map_cut[i][0] <= '9'))
 		{
-			map.ants = ft_atoi(map_cut[i]);
+			map.nb_ants = ft_atoi(map_cut[i]);
 			part++;
 		}
 		else if (part == 2) {
