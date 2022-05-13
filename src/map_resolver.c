@@ -47,17 +47,18 @@ void ft_resolve(t_mapping *map){
 		{
 			if (map->ants[i].nb_wait < tour && map->ants[i].end != true){
 				if (map->ants[i].room_move != map->path[map->ants[i].path_index].taille_chemin){
-					if (map->ants[i].room_move + 1 == map->path[map->ants[i].path_index].taille_chemin)
+					if (map->ants[i].room_move == map->path[map->ants[i].path_index].taille_chemin)
 						printf("L%d-%s ", i, map->room_end.name);
 					else
 						printf("L%d-%s ", i,
 								map->room[map->path[map->ants[i].path_index].index_road[map->ants[i].room_move]].name);
 				}
-				map->ants[i].room_move++;
 				if (map->ants[i].room_move == map->path[map->ants[i].path_index].taille_chemin){
+					printf("L%d-%s ", i, map->room_end.name);
 					ants_end++;
 					map->ants[i].end = true;
 				}
+				map->ants[i].room_move++;
 			}
 			i++;
 		}
