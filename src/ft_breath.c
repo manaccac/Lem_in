@@ -31,7 +31,6 @@ void ft_reset_path(t_mapping *map){
 
 void ft_reset_map(t_mapping *map){
 	int i = 0;
-	// printf("hello\n");
 
 	while (i < map->nbRoom){
 		map->room[i].take = false;
@@ -53,7 +52,6 @@ void 	ft_breath(t_mapping *map){
 	while (map->room_start.room_nbPipes > i)
 	{
 		map->path[i].road[0] = map->room_start.room_pipes[i];
-		// map->room[map->room_start.room_index[i]].hold = true;
 		map->path[i].index_road[0] = map->room_start.room_index[i];
 		if (ft_strcmp2(map->room[map->path[i].index_road[0]].name, map->room_end.name) != 0)
 			map->path[i].done = false;
@@ -61,8 +59,7 @@ void 	ft_breath(t_mapping *map){
 			map->path[i].done = true;
 		i++;
 	}
-	
-	// X variable en fonction du nbpipes de start ensuite il faut parcourire la map
+
 	i = 0;
 	int y;
 	int min_heat;
@@ -77,13 +74,10 @@ void 	ft_breath(t_mapping *map){
 			go_hold_room = false;
 			min_heat = 2147483647;
 			index_min_heat = 2147483647;
-			// printf("name	=	%s\n", map->room[map->path[j].index_road[i]].name);
-			// if (j == 0)
-			// 	printf("[%s]\n\n", map->room[map->path[j].index_road[i]].room_pipes[y]);
-			while (map->path[j].done != true && map->room[map->path[j].index_road[i]].room_nbPipes > y) // tant qu'il y a des pipe je cherhce le moins chaud
+			while (map->path[j].done != true && map->room[map->path[j].index_road[i]].room_nbPipes > y)
 			{
 				if (ft_strcmp2(map->room[map->path[j].index_road[i]].room_pipes[y], map->room_start.name) == 0)
-					;// printf("H_start	=	%d\n", map->room_start.heat_point);
+					;
 				else if (ft_strcmp2(map->room[map->path[j].index_road[i]].room_pipes[y], map->room_end.name) == 0){
 					map->path[j].done = true;
 					map->room[j].hold = true;
@@ -95,7 +89,6 @@ void 	ft_breath(t_mapping *map){
 					index_min_heat = 0;
 				}
 				else{
-					// printf("H_room	=	%d\n", map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point);
 					if (map->room[map->room[map->path[j].index_road[i]].room_index[y]].take == true)
 						;
 					else if (map->room[map->room[map->path[j].index_road[i]].room_index[y]].hold == true && map->room[map->path[j].index_road[i]].room_nbPipes != 2)
@@ -106,18 +99,10 @@ void 	ft_breath(t_mapping *map){
 						min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point;
 						index_min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].index;
 					}
-					// if (go_hold_room == true && map->room[map->room[map->path[j].index_road[i]].room_index[y]].hold == false &&
-					// map->path[j].nb_moves + map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point <=  min_heat + map->nb_ants){ // si le nombre de move deja fait + le heat point de la map et plus petit ou egale au nombre de fourmis alors on le choisi
-					// 	printf("dans la consition de pas hold\n");
-					// 	go_hold_room = false;
-					// 	min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].heat_point;
-					// 	index_min_heat = map->room[map->room[map->path[j].index_road[i]].room_index[y]].index;
-					// }
 				}
 				y++;
 			}
 			if (min_heat == 2147483647 && map->path[j].done != true){
-				// printf("BLOQUER\n");
 				ft_reset_path(map);
 				ft_reset_map(map);
 				nb_done = 0;
@@ -140,29 +125,11 @@ void 	ft_breath(t_mapping *map){
 
 	}
 
-	// // affichage 
 	i = 0;
 	while (map->room_start.room_nbPipes > i)
 	{
 		map->path[i].taille_chemin = map->path[i].nb_moves;
-		printf("done = %d taille chemin = %d\n", map->path[i].done, map->path[i].nb_moves);
+		// printf("done = %d taille chemin = %d\n", map->path[i].done, map->path[i].nb_moves);
 		i++;
 	}
-	
-	// i = 0;
-	// j = 0;
-	// while (map->room_start.room_nbPipes > i)
-	// {
-	// 	j = 0;
-	// 	if (map->path[i].done == true){
-	// 		printf("taille chemin = %d\n", map->path[i].nb_moves);
-	// 		printf("[[chemin %d]]\n", i);
-	// 		while (j < map->path[i].nb_moves)
-	// 		{
-	// 			printf("	[room = %s]\n", map->room[map->path[i].index_road[j]].name);
-	// 			j++;
-	// 		}
-	// 	}
-	// 	i++;
-	// }
 }

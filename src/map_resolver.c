@@ -1,14 +1,14 @@
 #include "../includes/lem_in.h"
 
 void ft_resolve(t_mapping *map){
-	// dprintf(1, "DANS FT RESOLVE\n");
-
 	int i;
 	int j;
 	int tmp_path_index;
 	int tmp_nb_moves;
 	j = 0;
 	i = 0; 
+	
+	map->ants = malloc(sizeof(t_ants) * map->nb_ants);
 
 	while (i < map->nb_ants)
 	{
@@ -30,19 +30,12 @@ void ft_resolve(t_mapping *map){
 			}
 			j++;
 		}
-		// printf("[best nb_moves	= %d]\n", tmp_nb_moves);
 		map->ants[i].path_index = tmp_path_index;
 		map->ants[i].nb_wait	= map->path[tmp_path_index].path_nb_wait++;
 		map->path[tmp_path_index].nb_moves++;
-		//IMPORTANT A LIRE CA 
-		// les chemin on augemente leurs mb mouve a chaque fourmis qui prend ce chemin au moins il prend le plus rapide
-		// mettre une sorte de waiting time au fourmi en gros si une fourmis a 2 de waiting time elle va attendre le tour 2 avent de prendre sont chemin
 		i++;
 	}
 
-	// d'abord choisir le chemin que toute les fourmis vont prendre avec un while
-
-	// ensuite avec un while faire les tours avec les print ...
 	int ants_end = 0;
 	int tour = 0;
 	i = 0;
@@ -53,14 +46,11 @@ void ft_resolve(t_mapping *map){
 		while (i != map->nb_ants)
 		{
 			if (map->ants[i].nb_wait < tour && map->ants[i].end != true){
-				// printf("name = %s\n", map->room[map->path[map->ants[i].path_index].index_road[map->ants[i].room_move]].name);
-				// printf("L%s-%s ", map->path[map->ants[i].path_index].index_road);// dans le while
 				if (map->ants[i].room_move != map->path[map->ants[i].path_index].taille_chemin){
 					if (map->ants[i].room_move + 1 == map->path[map->ants[i].path_index].taille_chemin)
-						printf("L%s-%s ", map->room[map->path[map->ants[i].path_index].index_road[map->ants[i].room_move - 1]].name,
-								map->room_end.name);
+						printf("L%d-%s ", i, map->room_end.name);
 					else
-						printf("L%s-%s ", map->room[map->path[map->ants[i].path_index].index_road[map->ants[i].room_move]].name,
+						printf("L%d-%s ", i,
 								map->room[map->path[map->ants[i].path_index].index_road[map->ants[i].room_move + 1]].name);
 				}
 				map->ants[i].room_move++;
@@ -71,22 +61,7 @@ void ft_resolve(t_mapping *map){
 			}
 			i++;
 		}
-		printf("\n"); // a la fin du tour
+		printf("\n");
 		tour++;
 	}
-	
-
-
-	// printf("L%s-%s ");// dans le while
-	// printf("\n"); // a la fin du tour
-
-	i = 0;
-	while (i < map->nb_ants)
-	{
-		// printf("[best path for ants	= %d]\n", map->ants[i].path_index);
-		i++;
-	}
-	
-
-	map->ants = map->ants;
 }
