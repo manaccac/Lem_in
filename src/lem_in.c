@@ -16,19 +16,18 @@ void ft_heat_map(t_mapping *map){
 	int j;
 
 	int nb_done;
-	char **done_name; // a voir comment faire pour ne pas a avoir a mettre comme ca
+	char **done_name;
 	int *done_index;
 
 	i = 0;
 	nb_done = 0;
 	int tmp;
 	tmp = 0;
-	done_name = malloc(1000000000);// a changer
+	done_name = malloc(1000000000);
 	
 	done_index = malloc(sizeof(int *) + map->nbRoom * 4);
 
 	while(i != map->room_end.room_nbPipes){
-		// printf("pipe de la room end %s = %s\n", map->room_end.name, map->room_end.room_pipes[i]);
 		if (ft_strcmp(map->room_end.room_pipes[i], map->room_start.name) == 0){
 			map->room_start.heat_point++;
 			done_name[nb_done] = map->room[j].name;
@@ -54,24 +53,16 @@ void ft_heat_map(t_mapping *map){
 	}
 	i = 0;
 
-	//test
 	int y;
 	int start_find = 0;
 	while(nb_done + start_find < map->nbRoom + 1 && done_name[i]){
-		// faire un truc en mode du debut de index done a la fin et quand on done on en met un a la fin
 		if (ft_strcmp(done_name[i], map->room_start.name) == 0 || ft_strcmp(done_name[i], map->room_end.name) == 0){
 			;
 		}
 		else {
 			j = 0;
-			// printf("i %d\n", i);
 			while (j < map->room[done_index[i]].room_nbPipes)
 			{
-				// printf("i %d\n", );
-				// printf("name = %s nbpipe = %d\n", map->room[done_index[i]].name ,map->room[done_index[i]].room_nbPipes);
-				// dprintf(1, "%d ===== %s\n", map->room[done_index[i]].room_nbPipes, map->room[done_index[i]].name);
-				// dprintf(1, "index	%d\n", done_index[i]);
-				// dprintf(1, "index	%s\n", map->room[0].name);
 				y = 0;
 				while (y < map->nbRoom){
 					if (ft_strcmp(map->room[done_index[i]].room_pipes[j], map->room_start.name) == 0){
@@ -222,8 +213,9 @@ int ft_verif_pipes(char *pipes, t_mapping map){
 	j = 0;
 	i = 0;
 
-	if (ft_strcmp(tmp[0], tmp[1]) == 0)
+	if (ft_strcmp(tmp[0], tmp[1]) == 0){
 		return -1;
+	}
 
 	while (i != 2 && j != 2){
 		while (y != map.nbRoom + 2)
@@ -349,6 +341,7 @@ int main()
 				i++;
 			}
 			if (ft_strncmp(map_cut[i], "##start", 7) == 0){
+				printf("%s\n", map_cut[i]);
 				i++;
 				while(map_cut[i] && map_cut[i][0] == '#')
 					i++;
@@ -367,6 +360,7 @@ int main()
 				}
 			}
 			else if (ft_strncmp(map_cut[i], "##end", 5) == 0){
+				printf("%s\n", map_cut[i]);
 				i++;
 				while(map_cut[i] && map_cut[i][0] == '#')
 					i++;
@@ -431,5 +425,11 @@ int main()
 	ft_resolve(&map);
 
 	free(buf);
+	free(tmp);
+	free(map_cut);
+	// free(map.ants);
+	// free(map.path);
+	// free(map.room);
+	// free(map.ants);
 	return 0;
 }

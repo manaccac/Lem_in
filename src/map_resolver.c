@@ -51,7 +51,7 @@ void ft_resolve(t_mapping *map){
 						printf("L%d-%s ", i, map->room_end.name);
 					else
 						printf("L%d-%s ", i,
-								map->room[map->path[map->ants[i].path_index].index_road[map->ants[i].room_move + 1]].name);
+								map->room[map->path[map->ants[i].path_index].index_road[map->ants[i].room_move]].name);
 				}
 				map->ants[i].room_move++;
 				if (map->ants[i].room_move == map->path[map->ants[i].path_index].taille_chemin){
