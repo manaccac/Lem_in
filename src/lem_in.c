@@ -1,9 +1,5 @@
 #include "../includes/lem_in.h"
 
-// sujet de correctio :
-//https://github.com/Binary-Hackers/42_Corrections/blob/master/00_Projects/02_Algorithmic/lem-in/01.png
-//https://github.com/rizky/42-corrections/blob/master/lem-in.pdf
-
 int	ft_strcmp(char *s1, char *s2)
 {
 	int i;
@@ -14,25 +10,24 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT POINT NOW
+void ft_heat_map(t_mapping *map){
 
 	int i;
 	int j;
 
 	int nb_done;
-	char **done_name; // a voir comment faire pour ne pas a avoir a mettre comme ca
+	char **done_name;
 	int *done_index;
 
 	i = 0;
 	nb_done = 0;
 	int tmp;
 	tmp = 0;
-	done_name = malloc(1000000000);// a changer
+	done_name = malloc(1000000000);
 	
 	done_index = malloc(sizeof(int *) + map->nbRoom * 4);
 
 	while(i != map->room_end.room_nbPipes){
-		// printf("pipe de la room end %s = %s\n", map->room_end.name, map->room_end.room_pipes[i]);
 		if (ft_strcmp(map->room_end.room_pipes[i], map->room_start.name) == 0){
 			map->room_start.heat_point++;
 			done_name[nb_done] = map->room[j].name;
@@ -58,24 +53,16 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 	}
 	i = 0;
 
-	//test
 	int y;
 	int start_find = 0;
 	while(nb_done + start_find < map->nbRoom + 1 && done_name[i]){
-		// faire un truc en mode du debut de index done a la fin et quand on done on en met un a la fin
 		if (ft_strcmp(done_name[i], map->room_start.name) == 0 || ft_strcmp(done_name[i], map->room_end.name) == 0){
 			;
 		}
 		else {
 			j = 0;
-			// printf("i %d\n", i);
 			while (j < map->room[done_index[i]].room_nbPipes)
 			{
-				// printf("i %d\n", );
-				// printf("name = %s nbpipe = %d\n", map->room[done_index[i]].name ,map->room[done_index[i]].room_nbPipes);
-				// dprintf(1, "%d ===== %s\n", map->room[done_index[i]].room_nbPipes, map->room[done_index[i]].name);
-				// dprintf(1, "index	%d\n", done_index[i]);
-				// dprintf(1, "index	%s\n", map->room[0].name);
 				y = 0;
 				while (y < map->nbRoom){
 					if (ft_strcmp(map->room[done_index[i]].room_pipes[j], map->room_start.name) == 0){
@@ -92,7 +79,7 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 						if (map->room[y].heat_point == 0) { // a mettre un if le nouveau heat point et plus bas alors on remplace juste le heat point
 							if (map->room[y].room_nbPipes == 1)
 								map->room[y].deadlock = true;
-							if (map->room[done_index[i]].heat_point + 1 + map->ants > map->room_start.heat_point) // si la room et trop eloignee
+							if (map->room[done_index[i]].heat_point + 1 + map->nb_ants > map->room_start.heat_point) // si la room et trop eloignee
 							map->room[y].heat_point = map->room[done_index[i]].heat_point + 1;
 							done_name[nb_done] = map->room[y].name;
 							done_index[nb_done] = map->room[y].index;
@@ -102,65 +89,12 @@ void ft_heat_map(t_mapping *map){ // ON EN ETAIT ICI IL FAUT AJOUTER LES HEAT PO
 					}
 					y++;
 				}
-				// dprintf(1, "seg?\n");
-				// dprintf(1, "index	%d\n", nb_done);
-				// dprintf(1, "index	%d\n", done_index[i]);
-				// dprintf(1, "nb_done	%d\n", map->room[done_index[i]].room_nbPipes);
-				// dprintf(1, "seg?\n");
 				j++;
 			}
 		}
 		i++;
 	}
 
-	//fin test 
-
-	// printf("%d\n", map->room[0].room_nbPipes);
-	// printf("%s = %s\n",map->room[0].room_pipes[4], map->room[6].name);
-
-	i = 0;
-	// while (i < nb_done){
-	// 	// dprintf(1, "%s\n", map->room[done_index[i]].name);
-	// 	i++;
-	// }
-
-	// while(i < map->nbRoom){
-	// 	j = 0;
-	// 	while(j != map->room[i].room_nbPipes){
-	// 		// printf("pipe de la room %s = %s\n", map->room[i].name, map->room[i].room_pipes[j]);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
-	// i = 0;
-	// while(i != map->room_start.room_nbPipes){
-	// 	// printf("pipe de la room start %s = %s\n", map->room_start.name, map->room_start.room_pipes[i]);
-	// 	i++;
-	// }
-
-
-	//test map de heat
-	i = 0;
-
-	// while(i != nb_done){
-	// 	// printf("done = %s\n", done_name[i]);
-	// 	i++;
-	// }
-
-	i = 0;
-	int nb_impasse = 0;
-	while (i != map->nbRoom){
-		if (map->room[i].deadlock == true){
-			printf("[room name= %s] [heatpoint = %d] [impasse = %d]\n", map->room[i].name, map->room[i].heat_point ,map->room[i].deadlock);
-			nb_impasse++;
-		}
-		else{
-			printf("room name= %s heatpoint = %d\n", map->room[i].name, map->room[i].heat_point);
-		}
-		i++;
-	}
-	printf("\n\nnb room = %d nb impasse = %d\n", map->nbRoom, nb_impasse);
-	printf("start room = %s nb heat = %d\n\n", map->room_start.name, map->room_start.heat_point);
 	free(done_name);
 	free(done_index);
 }
@@ -170,8 +104,8 @@ void ft_setPipe(t_mapping *map){
 	int j;
 	int y;
 
-	int test = 0; // test pour index avec les pipes
-	int j_tmp = 0; // pareil
+	int test = 0;
+	int j_tmp = 0;
 
 	char **tmp;
 
@@ -183,7 +117,6 @@ void ft_setPipe(t_mapping *map){
 		j = 0;
 			while(map->roomName[y] && j != 2){
 				if (ft_strcmp(map->room_start.name, tmp[j]) == 0) {
-					// dprintf(1, "start %s = %s\n", map->roomName[y], tmp[j]);
 					if (j == 1){
 						map->room_start.room_pipes[map->room_start.room_nbPipes] = tmp[0];
 						j_tmp = 0;
@@ -209,7 +142,6 @@ void ft_setPipe(t_mapping *map){
 					y = -1;
 				}
 				else if (ft_strcmp(map->room_end.name, tmp[j]) == 0) {
-					// dprintf(1, "end %s = %s\n", map->room_end.name, tmp[j]);
 					if (j == 1){
 						map->room_end.room_pipes[map->room_end.room_nbPipes] = tmp[0];
 						j_tmp = 0;
@@ -235,7 +167,6 @@ void ft_setPipe(t_mapping *map){
 					y = -1;
 				}
 				else if (ft_strcmp(map->room[y].name, tmp[j]) == 0){
-					// dprintf(1, "room %s = %s\n", map->room[y].name, tmp[j]);
 					if (j == 1){
 						map->room[y].room_pipes[map->room[y].room_nbPipes] = tmp[0];
 						j_tmp = 0;
@@ -282,8 +213,9 @@ int ft_verif_pipes(char *pipes, t_mapping map){
 	j = 0;
 	i = 0;
 
-	if (ft_strcmp(tmp[0], tmp[1]) == 0)
+	if (ft_strcmp(tmp[0], tmp[1]) == 0){
 		return -1;
+	}
 
 	while (i != 2 && j != 2){
 		while (y != map.nbRoom + 2)
@@ -326,7 +258,7 @@ void ft_name_room(t_mapping *map){
 }
 
 char *ft_name(char *room){
-	char *tmp; // a mettre en dinamique
+	char *tmp;
 	int i = 0;
 	int j = 0;
 
@@ -351,7 +283,7 @@ int ft_verif_room(char *room){
 	if (room[0] == 'L' || room[0] == '#')
 		return -1;
 	i++;
-	while (room[i] != ' ' && room[i]) // we scipt the name part
+	while (room[i] != ' ' && room[i])
 		i++;
 	if (room[i] == '\n')
 		return -4;
@@ -363,7 +295,7 @@ int ft_verif_room(char *room){
 		return -2;
 	
 	if (room[i] == ' ')
-		i++; // for jump the space
+		i++;
 	if (room[i] >= '0' && room[i] <= '9')
 		while (room[i] >= '0' && room[i] <= '9')
 			i++;
@@ -390,14 +322,13 @@ int main()
 
 	t_mapping map;
 	char **tmp;
-	// map.room = malloc(10);
 	map.room = malloc(sizeof(t_room) * 100000 + 1);
 
 	while (map_cut[i])
 	{
 		if (part == 1 && (map_cut[i][0] >= '0' && map_cut[i][0] <= '9'))
 		{
-			map.ants = ft_atoi(map_cut[i]);
+			map.nb_ants = ft_atoi(map_cut[i]);
 			part++;
 		}
 		else if (part == 2) {
@@ -410,6 +341,7 @@ int main()
 				i++;
 			}
 			if (ft_strncmp(map_cut[i], "##start", 7) == 0){
+				printf("%s\n", map_cut[i]);
 				i++;
 				while(map_cut[i] && map_cut[i][0] == '#')
 					i++;
@@ -428,6 +360,7 @@ int main()
 				}
 			}
 			else if (ft_strncmp(map_cut[i], "##end", 5) == 0){
+				printf("%s\n", map_cut[i]);
 				i++;
 				while(map_cut[i] && map_cut[i][0] == '#')
 					i++;
@@ -479,32 +412,11 @@ int main()
 				nb_pipes++;
 			}
 		}
+		printf("%s\n", map_cut[i]);
 		i++;
 	}
 	map.nbPipe = nb_pipes;
 	ft_setPipe(&map);
-
-	// AFFICHAGE
-	// printf("nb Antes 	= 	%d\n", map.ants);
-	// printf("start		=	%s\n", map.start);
-	// printf("end 		=	%s\n", map.end);
-	// int test = 0;
-	// while (test != map.nbRoom){
-	// 	printf("map		=	%s\n", map.map[test]);
-	// 	test++;
-	// }
-	// test = 0;
-	// while(map.nbRoom + 2 != test){
-	// 	printf("name room	=	%s\n", map.roomName[test]);
-	// 	test++;
-	// }
-	// test = 0;
-
-	// while(map.nbPipe != test){
-	// 	printf("Pipe room	=	%s\n", map.pipes[test]);
-	// 	test++;
-	// }
-
 
 	ft_heat_map(&map);
 	ft_breath(&map);
@@ -513,5 +425,11 @@ int main()
 	ft_resolve(&map);
 
 	free(buf);
+	free(tmp);
+	free(map_cut);
+	// free(map.ants);
+	// free(map.path);
+	// free(map.room);
+	// free(map.ants);
 	return 0;
 }

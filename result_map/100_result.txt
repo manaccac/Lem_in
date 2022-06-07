@@ -295,3 +295,18 @@ end 1 0
 start-83
 start-1
 end-0
+
+L0-83 
+L0-49 L1-83 
+L0-64 L1-49 L2-83 
+L0-0 L1-64 L2-49 L3-83 
+L0-end L1-0 L2-64 L3-49 L4-83 
+L1-end L2-0 L3-64 L4-49 L5-83 
+L2-end L3-0 L4-64 L5-49 L6-83 
+L3-end L4-0 L5-64 L6-49 L7-83 
+L4-end L5-0 L6-64 L7-49 L8-83 
+L5-end L6-0 L7-64 L8-49 L9-83 
+L6-end L7-0 L8-64 L9-49 
+L7-end L8-0 L9-64 
+L8-end L9-0 
+L9-end 

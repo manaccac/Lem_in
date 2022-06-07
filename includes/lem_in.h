@@ -26,6 +26,7 @@ typedef struct		s_room
 	bool deadlock;
 	
 	bool hold;
+	bool take;
 }					t_room;
 
 
@@ -33,8 +34,13 @@ typedef struct		s_path
 {
 	bool done;
 	int		nb_moves;
+
+	int		taille_chemin;
+
 	char	*road[1000];
 	int		index_road[1000];
+
+	int		path_nb_wait;
 }					t_path;
 
 typedef struct		s_end
@@ -71,21 +77,23 @@ typedef struct		s_start
 	bool hold;
 }					t_start;
 
-typedef struct s_Ants
+typedef struct s_ants
 {
 	bool 	end;
 
+	int		path_index;//Chemin choisi
+
+	int		nb_wait;
+
 	char 	*in_room;
-	int		room_index;
+	int		room_move; // pour le move savoir ou on en est et on l'augmente de 1 a chaque avancement
 
-
-
-}					t_Ants;
+}					t_ants;
 
 
 typedef struct		s_mapping
 {
-	int ants;
+	int nb_ants;
 	int nbRoom;
 	int nbPipe;
 
@@ -106,6 +114,7 @@ typedef struct		s_mapping
 	t_end		room_end;
 	t_start		room_start;
 	t_path		*path;// a mettre en dinamique
+	t_ants		*ants;
 
 }					t_mapping;
 
