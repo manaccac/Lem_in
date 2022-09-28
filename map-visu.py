@@ -11,12 +11,7 @@ try:
         from pygame.locals import *
 except:
     print("Import error")
-    print("""Please make sure these libraries are correctly available:
-* pygame
-* pytweening""")
     exit(1)
-
-FPS = 30
 
 #            R    G    B
 GRAY     = (100, 100, 100)
@@ -34,40 +29,24 @@ DGREEN   = (165, 105, 178)
 MUSTARD  = (229, 137, 100)
 ORANGE   = (206,  90,  57)
 DPURPLE  = ( 41,  50,  65)
-
 GREEN    = ( 79, 255, 151)
 DGREEN   = ( 15,  91,  82)
 PINK     = (220,  40,  90)
 DPINK    = (111,  29,  74)
 
-BGCOLOR = (245,222,179)
-ANTCOLOR = BLACK
-# ROOMCOLOR = PURPLE
-ROOMCOLOR = (165, 27, 27)
-# STARTCOLOR = (250, 30, 30)
-STARTCOLOR = ROOMCOLOR
-# ENDCOLOR = (255, 150, 79)
-ENDCOLOR = MUSTARD
-CONNCOLOR = MUSTARD
-
+# Error Types
 ANTS_ERR = 1
 ROOM_ERR = 2
 CONN_ERR = 4
 MOVE_ERR = 8
 READ_ERR = 16
 
-WINDOWWIDTH = 1000
-WINDOWHEIGHT = 1000
-
 class Ant:
 
     def __init__(self, name, start):
         self.name = name
         self.x, self.y = start
-        if random.randint(0, 1000) == 0:
-            self.img = pygame.image.load(sys.path[0] + "/assets/durantunderscorecommaunderscorekevin.png")
-        else:
-            self.img = pygame.image.load(sys.path[0] + "/assets/ant.png")
+        self.img = pygame.image.load(sys.path[0] + "/assets/ant.png")
         self.n = 0
         self.move_list = None
         self.step = 1
@@ -122,9 +101,8 @@ class Game:
         pygame.init()
         pygame.key.set_repeat(150, 5)
         self.clock = pygame.time.Clock()
-        self.surf = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), 0, 32)
-        pygame.display.set_caption("lem-in visualizer\n")
-        self.fps = FPS
+        self.surf = pygame.display.set_mode((1000, 1000), 0, 32)
+        pygame.display.set_caption("visualizer\n")
         self.roomsize = 16
         self.num_ants = None
         self.room_max_x = None
@@ -206,11 +184,11 @@ class Game:
     def draw_rooms(self):
         for rname in self.roommap:
             if self.roommap[rname].start_end == -1:
-                room_color = STARTCOLOR
+                room_color = (0, 255, 0)
             elif self.roommap[rname].start_end == 1:
-                room_color = ENDCOLOR
+                room_color = (255, 0, 0)
             else:
-                room_color = ROOMCOLOR
+                room_color = (165, 27, 27)
             pygame.draw.rect(self.surf, room_color, (self.roommap[rname].disp_x, self.roommap[rname].disp_y, self.roommap[rname].roomsize, self.roommap[rname].roomsize))
             if self.roommap[rname].start_end == -1:
                 rm = self.roommap[rname]
@@ -221,48 +199,48 @@ class Game:
             room_a = self.roommap[rname]
             for cname in room_a.conns:
                 room_b = self.roommap[cname]
-                pygame.draw.line(self.surf, CONNCOLOR, room_a.center, room_b.center, 2)
+                pygame.draw.line(self.surf, (0, 0, 255), room_a.center, room_b.center, 2)
 
     def read_input(self):
         lines = [n.rstrip() for n in sys.stdin]
         for n in lines:
             print(n)
-        linum = len(lines)
+        file_len = len(lines)
         n = 0
-        start_end = 0
-        room_p = re.compile("(?:(?:[a-zA-Z0-9_]+ \d+ \d+$)|(?:^#))")
+        room_reg = re.compile("(?:(?:[a-zA-Z0-9_]+ \d+ \d+$)|(?:^#))") # Regex pour les rooms
+        conn_reg = re.compile("(?:(?:^[a-zA-Z0-9_]+-[a-zA-Z0-9_]+$)|(?:^#))") # Regex pour les connexions
+        move_p = re.compile("^(?:L[0-9]+-[a-zA-Z0-9_]+ ?)+$") # Regex des mouvements
         try:
-            self.num_ants = int(lines[n])
+            self.num_ants = int(lines[n]) # nombre de fourmix
             n += 1
         except:
             print_err(ANTS_ERR)
-        while n < linum and room_p.match(lines[n]):
+        while n < file_len and room_reg.match(lines[n]):
             if lines[n][0] == '#':
                 if lines[n] == '##start':
-                    start_end = -1
+                    n += 1
+                    self.add_room(lines[n], -1)
                 elif lines[n] == '##end':
-                    start_end = 1
+                    n += 1
+                    self.add_room(lines[n], 1)
                 n += 1
                 continue
             else:
-                self.add_room(lines[n], start_end)
-            start_end = 0
+                self.add_room(lines[n], 0)
             n += 1
-        conn_p = re.compile("(?:(?:^[a-zA-Z0-9_]+-[a-zA-Z0-9_]+$)|(?:^#))")
-        while n < linum and conn_p.match(lines[n]):
+        while n < file_len and conn_reg.match(lines[n]):
             if lines[n][0] == '#':
                 pass
             else:
                 self.add_conn(lines[n])
             n += 1
-        move_p = re.compile("^(?:L[0-9]+-[a-zA-Z0-9_]+ ?)+$")
-        if n == linum or lines[n] != '':
+        if n == file_len or lines[n] != '':
             print_err(ANTS_ERR)
         n += 1
-        while n < linum and move_p.match(lines[n]):
+        while n < file_len and move_p.match(lines[n]):
             self.ant_moves.append(lines[n])
             n += 1
-        if n != linum:
+        if n != file_len:
             print_err(ANTS_ERR)
         self.ant_moves = [[]] + self.ant_moves
         for n in range(self.num_ants):
@@ -301,7 +279,7 @@ class Game:
 
     def draw(self):
         self.ants_moving = 0
-        self.surf.fill(BGCOLOR)
+        self.surf.fill((45,45,45))
         self.draw_connections()
         self.draw_rooms()
         self.update_ants()
@@ -311,7 +289,7 @@ class Game:
 
     def run(self):
         while 1:
-            self.clock.tick(self.fps)
+            self.clock.tick(30)
             self.events()
             self.draw()
 
@@ -337,7 +315,7 @@ Esc, Q  : quit visualizer
 Up      : increase ant speed
 Down    : decrease ant speed
 Right   : move ants
-0       : reset ant speed
+0       : reset speed
 I       : toggle instant ant movement
 Home, R : reset""")
             sys.exit()
