@@ -2,7 +2,6 @@
 
 try:
     import sys
-    import random
     import re
     import pytweening
     import contextlib
@@ -10,7 +9,7 @@ try:
         import pygame
         from pygame.locals import *
 except:
-    print("Import error")
+    print("Import error: make sure you use the commands \"python3 -m pip install pygame\" and \"python3 -m pip install pytweening\"")
     exit(1)
 
 #            R    G    B
