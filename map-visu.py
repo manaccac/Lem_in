@@ -45,7 +45,7 @@ class Ant:
     def __init__(self, name, start):
         self.name = name
         self.x, self.y = start
-        self.img = pygame.image.load(sys.path[0] + "/assets/ant.png")
+        self.img = pygame.image.load(sys.path[0] + "/asset/ant.png")
         self.n = 0
         self.move_list = None
         self.step = 1
@@ -86,13 +86,10 @@ class Room:
         self.disp_x = self.x * 5
         self.disp_y = self.y * 5
         self.roomsize = roomsize
-        self.center = (self.disp_x + self.roomsize/ 2, self.disp_y + self.roomsize / 2)
+        self.center = (self.disp_x + self.roomsize / 2, self.disp_y + self.roomsize / 2)
 
     def __str__(self):
         return ("Room %s start_end %d pos (%d, %d)" % (self.name, self.start_end, self.x, self.y))
-
-    def add_conn(new):
-        self.conns[new.name] = new
 
 class Game:
 
@@ -131,7 +128,7 @@ class Game:
             if self.event.type == KEYDOWN:
                 if self.event.key == K_ESCAPE or self.event.key == K_q:
                     self.quit()
-                if self.event.key == K_RIGHT and not self.ants_moving:
+                if self.event.key == K_SPACE and not self.ants_moving:
                     self.move_num = min(self.move_num + self.inc, len(self.ant_moves) - 1)
                 if self.event.key == K_UP:
                     for n in self.antmap:
@@ -206,9 +203,10 @@ class Game:
             print(n)
         file_len = len(lines)
         n = 0
+        start_end = 0
         room_reg = re.compile("(?:(?:[a-zA-Z0-9_]+ \d+ \d+$)|(?:^#))") # Regex pour les rooms
         conn_reg = re.compile("(?:(?:^[a-zA-Z0-9_]+-[a-zA-Z0-9_]+$)|(?:^#))") # Regex pour les connexions
-        move_p = re.compile("^(?:L[0-9]+-[a-zA-Z0-9_]+ ?)+$") # Regex des mouvements
+        move_reg = re.compile("^(?:L[0-9]+-[a-zA-Z0-9_]+ ?)+$") # Regex des mouvements
         try:
             self.num_ants = int(lines[n]) # nombre de fourmix
             n += 1
@@ -217,15 +215,14 @@ class Game:
         while n < file_len and room_reg.match(lines[n]):
             if lines[n][0] == '#':
                 if lines[n] == '##start':
-                    n += 1
-                    self.add_room(lines[n], -1)
+                    start_end = -1 
                 elif lines[n] == '##end':
-                    n += 1
-                    self.add_room(lines[n], 1)
+                    start_end = 1 
                 n += 1
                 continue
             else:
-                self.add_room(lines[n], 0)
+                self.add_room(lines[n], start_end)
+            start_end = 0
             n += 1
         while n < file_len and conn_reg.match(lines[n]):
             if lines[n][0] == '#':
@@ -236,14 +233,14 @@ class Game:
         if n == file_len or lines[n] != '':
             print_err(ANTS_ERR)
         n += 1
-        while n < file_len and move_p.match(lines[n]):
+        while n < file_len and move_reg.match(lines[n]):
             self.ant_moves.append(lines[n])
             n += 1
         if n != file_len:
             print_err(ANTS_ERR)
         self.ant_moves = [[]] + self.ant_moves
         for n in range(self.num_ants):
-            name = 'L' + str(n + 1)
+            name = 'L' + str(n)
             self.antmap[name] = Ant(name, self.start.center)
 
     def display_ant(self, ant):
@@ -269,7 +266,7 @@ class Game:
                 print_err(ANTS_ERR)
             try:
                 self.antmap[n[0]].start_move(self.roommap[n[1]].center)
-            except:
+            except KeyError:
                 print_err(MOVE_ERR)
 
     def quit(self):
@@ -285,6 +282,7 @@ class Game:
         self.move_ants()
         self.draw_ants()
         pygame.display.update()
+
 
     def run(self):
         while 1:
@@ -313,7 +311,7 @@ def main():
 Esc, Q  : quit visualizer
 Up      : increase ant speed
 Down    : decrease ant speed
-Right   : move ants
+space   : move ants
 0       : reset speed
 I       : toggle instant ant movement
 Home, R : reset""")
