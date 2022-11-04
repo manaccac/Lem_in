@@ -200,6 +200,7 @@ void ft_setPipe(t_mapping *map){
 		i++;
 		free(tmp);
 	}
+	printf("bleu\n");
 }
 
 int ft_verif_pipes(char *pipes, t_mapping map){
@@ -417,9 +418,13 @@ int main()
 	}
 	map.nbPipe = nb_pipes;
 	ft_setPipe(&map);
+	printf("bleu\n");
 
 	ft_heat_map(&map);
+	printf("bleu21\n");
+	printf("%d\n", map.nbPipe);
 	ft_breath(&map);
+	printf("bleu3\n");
 
 
 	ft_resolve(&map);
