@@ -21,8 +21,8 @@ void ft_heat_map(t_mapping *map){
 
 	i = 0;
 	nb_done = 0;
-	int tmp;
-	tmp = 0;
+	// int tmp;
+	// tmp = 0;
 	done_name = malloc(1000000000);
 	
 	done_index = malloc(sizeof(int *) + map->nbRoom * 4);
@@ -200,7 +200,6 @@ void ft_setPipe(t_mapping *map){
 		i++;
 		free(tmp);
 	}
-	printf("bleu\n");
 }
 
 int ft_verif_pipes(char *pipes, t_mapping map){
@@ -323,14 +322,28 @@ int main()
 
 	t_mapping map;
 	char **tmp;
-	map.room = malloc(sizeof(t_room) * 100000 + 1);
+	map.room = malloc(sizeof(t_room) * (ft_strlen(buf)));
 
 	while (map_cut[i])
 	{
 		if (part == 1 && (map_cut[i][0] >= '0' && map_cut[i][0] <= '9'))
 		{
-			map.nb_ants = ft_atoi(map_cut[i]);
-			part++;
+			int u = 0;
+			while (map_cut[i][u] && (map_cut[i][u] >= '0' && map_cut[i][u] <= '9')){
+				u++;
+			}
+			if (map_cut[i][u] && map_cut[i][u] != '#'){
+				printf("ERROR No Ants\n");
+				free(map_cut);
+				free(buf);
+				return (-1);
+			}
+			else
+			{
+				map.nb_ants = ft_atoi(map_cut[i]);
+				part++;
+			}
+			
 		}
 		else if (part == 2) {
 			while((map_cut[i] && map_cut[i][0] == '#'))
@@ -396,7 +409,7 @@ int main()
 					free(tmp);
 					other_room_nb++;
 					}
-				else{
+				else if (map.start && map.end){
 					map.nbRoom = other_room_nb;
 					ft_name_room(&map);
 					part++;
@@ -416,25 +429,57 @@ int main()
 		printf("%s\n", map_cut[i]);
 		i++;
 	}
+	if (!map.start || !map.end){
+		free(buf);
+		free(map_cut);
+		free(map.room);
+		printf("ERROR no start or end\n");
+		return (-1);
+	}
 	map.nbPipe = nb_pipes;
+	i = 0;
+	while (i < map.nbRoom)
+	{
+		map.room[i].room_pipes = malloc((sizeof nb_pipes) * nb_pipes);
+		map.room[i].room_index = malloc((sizeof nb_pipes) * (map.room[i].room_nbPipes + nb_pipes));
+		i++;
+	}
+	map.room_start.room_pipes = malloc((sizeof nb_pipes) * nb_pipes);
+	map.room_start.room_index = malloc((sizeof nb_pipes) * (map.room[i].room_nbPipes + nb_pipes));
+	map.room_end.room_pipes = malloc((sizeof nb_pipes) * nb_pipes);
+	map.room_end.room_index = malloc((sizeof nb_pipes) * (map.room[i].room_nbPipes + nb_pipes));
+	
 	ft_setPipe(&map);
-	printf("bleu\n");
-
 	ft_heat_map(&map);
-	printf("bleu21\n");
-	printf("%d\n", map.nbPipe);
 	ft_breath(&map);
-	printf("bleu3\n");
 
-
-	ft_resolve(&map);
-
+	i = 0;
+	int nb_done = 0;
+	while (map.room_start.room_nbPipes > i){
+		if (map.path[i].done == true)
+			nb_done++;
+		i++;
+	}
+	if (nb_done > 0)
+		ft_resolve(&map);
+	else {
+		printf("ERROR no path found\n");
+	}
+	i = 0;
+	while (i < map.nbRoom)
+	{
+		free(map.room[i].room_pipes);
+		free(map.room[i].room_index);
+		i++;
+	}
+	free(map.room_start.room_pipes);
+	free(map.room_start.room_index);
+	free(map.room_end.room_pipes);
+	free(map.room_end.room_index);
 	free(buf);
 	free(tmp);
 	free(map_cut);
-	// free(map.ants);
-	// free(map.path);
-	// free(map.room);
-	// free(map.ants);
+	free(map.path);
+	free(map.room);
 	return 0;
 }

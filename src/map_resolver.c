@@ -7,7 +7,6 @@ void ft_resolve(t_mapping *map){
 	int tmp_nb_moves;
 	j = 0;
 	i = 0; 
-	printf("hello4");
 	
 	map->ants = malloc(sizeof(t_ants) * map->nb_ants);
 

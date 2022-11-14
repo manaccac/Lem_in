@@ -39,6 +39,7 @@ ROOM_ERR = 2
 CONN_ERR = 4
 MOVE_ERR = 8
 READ_ERR = 16
+ZOOM = 50
 
 class Ant:
 
@@ -57,12 +58,7 @@ class Ant:
         self.move_list = pytweening.getLine(self.x, self.y, end_coords[0], end_coords[1])
         self.move_list.append(end_coords)
 
-    def move(self, step=1, instamove=0):
-        if instamove:
-            if self.move_list:
-                self.x, self.y = self.move_list[-1]
-                self.move_list = None
-            return 0
+    def move(self, step=1):
         if self.move_list == None:
             self.n = 0
             return 0
@@ -83,8 +79,8 @@ class Room:
         self.x, self.y = coords
         self.start_end = start_end  # start = -1; end = 1; other = 0
         self.conns = {}
-        self.disp_x = self.x * 5
-        self.disp_y = self.y * 5
+        self.disp_x = self.x * ZOOM
+        self.disp_y = self.y * ZOOM
         self.roomsize = roomsize
         self.center = (self.disp_x + self.roomsize / 2, self.disp_y + self.roomsize / 2)
 
@@ -113,7 +109,6 @@ class Game:
         self.start = None
         self.end = None
         self.ants_moving = 0
-        self.instamove = 0
 
     def __str__(self):
         try:
@@ -145,8 +140,6 @@ class Game:
                 if self.event.key == K_0 or self.event.key == K_KP0:
                     for n in self.antmap:
                         self.antmap[n].step = 1
-                if self.event.key == K_i:
-                    self.instamove = ~self.instamove
 
     def add_conn(self, line):
         n = line.split('-')
@@ -254,7 +247,7 @@ class Game:
 
     def move_ants(self):
         for n in self.antmap:
-            self.ants_moving += self.antmap[n].move(self.antmap[n].step, self.instamove)
+            self.ants_moving += self.antmap[n].move(self.antmap[n].step)
 
     def update_ants(self):
         line = self.ant_moves[self.move_num]
@@ -313,7 +306,6 @@ Up      : increase ant speed
 Down    : decrease ant speed
 space   : move ants
 0       : reset speed
-I       : toggle instant ant movement
 Home, R : reset""")
             sys.exit()
         else:

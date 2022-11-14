@@ -13,13 +13,13 @@ typedef struct		s_room
 	int posX;
 	int posY;
 
-	int index; // pour savoir ou il se trouve dans la map
+	int index;
 
-	int room_nbPipes; // a initialliser a 0
+	int room_nbPipes;
 
-	char *name;	// a mettre en dinamique
-	char *room_pipes[1000];
-	int room_index[1000];
+	char *name;	
+	char **room_pipes;
+	int *room_index;
 
 	int heat_point;
 
@@ -37,8 +37,8 @@ typedef struct		s_path
 
 	int		taille_chemin;
 
-	char	*road[1000];
-	int		index_road[1000];
+	char	**road;
+	int		*index_road;
 
 	int		path_nb_wait;
 }					t_path;
@@ -48,14 +48,14 @@ typedef struct		s_end
 	int posX;
 	int posY;
 	
-	int index; // pour savoir ou il se trouve dans la map
+	int index;
 
-	int room_nbPipes; // a initialliser a 0
+	int room_nbPipes;
 	int heat_point;
 
-	char *name;	// a mettre en dinamique
-	char *room_pipes[1000];
-	int room_index[1000];
+	char *name;	
+	char **room_pipes;
+	int *room_index;
 	
 	bool hold;
 }					t_end;
@@ -65,14 +65,14 @@ typedef struct		s_start
 	int posX;
 	int posY;
 
-	int index; // pour savoir ou il se trouve dans la map
+	int index;
 	
-	int room_nbPipes; // a initialliser a 0
+	int room_nbPipes;
 	int heat_point;
 
-	char *name;	// a mettre en dinamique
-	char *room_pipes[1000];
-	int room_index[1000];
+	char *name;	
+	char **room_pipes;
+	int *room_index;
 	
 	bool hold;
 }					t_start;
@@ -81,12 +81,12 @@ typedef struct s_ants
 {
 	bool 	end;
 
-	int		path_index;//Chemin choisi
+	int		path_index;
 
 	int		nb_wait;
 
 	char 	*in_room;
-	int		room_move; // pour le move savoir ou on en est et on l'augmente de 1 a chaque avancement
+	int		room_move;
 
 }					t_ants;
 
@@ -99,21 +99,19 @@ typedef struct		s_mapping
 
 	int Ants_finish;
 
-	char *start; // a mettre en dinamique
-	char *end;// a mettre en dinamique
+	char *start; 
+	char *end;
 
-	char *roomName[10000];// a mettre en dinamique
+	char *roomName[100];
 
 
-	char *map[10000];// a mettre en dinamique
-	char *pipes[100000];// a mettre en dinamique
+	char *map[10000];
+	char *pipes[100000];
 
-	// char *resolve[100];// a mettre en dinamique
-
-	t_room		*room; //room[300];// a mettre en dinamique
+	t_room		*room;
 	t_end		room_end;
 	t_start		room_start;
-	t_path		*path;// a mettre en dinamique
+	t_path		*path;
 	t_ants		*ants;
 
 }					t_mapping;
