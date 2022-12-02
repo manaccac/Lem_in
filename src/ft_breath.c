@@ -54,6 +54,8 @@ void 	ft_breath(t_mapping *map){
 		map->path[i].index_road = malloc(sizeof(map->path->index_road) * map->nbPipe);
 		map->path[i].road[0] = map->room_start.room_pipes[i];
 		map->path[i].index_road[0] = map->room_start.room_index[i];
+		map->path[i].nb_moves = 0;
+		map->path[i].path_nb_wait = 0;
 		if (ft_strcmp2(map->room[map->path[i].index_road[0]].name, map->room_end.name) != 0)
 			map->path[i].done = false;
 		else

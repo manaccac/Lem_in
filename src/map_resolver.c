@@ -43,7 +43,7 @@ void ft_resolve(t_mapping *map){
 	while (ants_end < map->nb_ants)
 	{
 		i = 0;
-		while (i != map->nb_ants)
+		while (i < map->nb_ants)
 		{
 			if (map->ants[i].nb_wait < tour && map->ants[i].end != true){
 				if (map->ants[i].room_move != map->path[map->ants[i].path_index].taille_chemin){
