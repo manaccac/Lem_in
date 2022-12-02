@@ -138,7 +138,7 @@ void 	ft_breath(t_mapping *map){
 	while (map->room_start.room_nbPipes > i)
 	{
 		map->path[i].taille_chemin = map->path[i].nb_moves;
-		printf("done = %d taille chemin = %d\n", map->path[i].done, map->path[i].nb_moves);
+		// printf("done = %d taille chemin = %d\n", map->path[i].done, map->path[i].nb_moves);
 		i++;
 	}
 }

@@ -415,7 +415,6 @@ int main()
 					}
 				else if (map.start && map.end){
 					map.nbRoom = other_room_nb;
-					printf("room name\n");
 					map.roomName = malloc(sizeof(char *) * 1000);
 					ft_name_room(&map);
 					part++;

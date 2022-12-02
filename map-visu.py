@@ -39,7 +39,7 @@ ROOM_ERR = 2
 CONN_ERR = 4
 MOVE_ERR = 8
 READ_ERR = 16
-ZOOM = 50
+ZOOM = 25
 
 class Ant:
 
