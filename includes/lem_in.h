@@ -102,11 +102,11 @@ typedef struct		s_mapping
 	char *start; 
 	char *end;
 
-	char *roomName[100];
+	char **roomName;
 
 
-	char *map[10000];
-	char *pipes[100000];
+	char **map;
+	char **pipes;
 
 	t_room		*room;
 	t_end		room_end;

@@ -322,7 +322,9 @@ int main()
 
 	t_mapping map;
 	char **tmp;
+	map.map = malloc(sizeof(char **) * (ft_strlen(buf)));
 	map.room = malloc(sizeof(t_room) * (ft_strlen(buf)));
+	map.pipes = malloc(sizeof(char **) * (ft_strlen(buf)));
 
 	while (map_cut[i])
 	{
@@ -336,6 +338,8 @@ int main()
 				printf("ERROR No Ants\n");
 				free(map_cut);
 				free(buf);
+				free(map.map);
+				free(map.pipes);
 				return (-1);
 			}
 			else
@@ -411,6 +415,8 @@ int main()
 					}
 				else if (map.start && map.end){
 					map.nbRoom = other_room_nb;
+					printf("room name\n");
+					map.roomName = malloc(sizeof(char *) * 1000);
 					ft_name_room(&map);
 					part++;
 				}
@@ -433,6 +439,8 @@ int main()
 		free(buf);
 		free(map_cut);
 		free(map.room);
+		free(map.map);
+		free(map.pipes);
 		printf("ERROR no start or end\n");
 		return (-1);
 	}
@@ -472,12 +480,15 @@ int main()
 		free(map.room[i].room_index);
 		i++;
 	}
+	free(map.roomName);
 	free(map.room_start.room_pipes);
 	free(map.room_start.room_index);
 	free(map.room_end.room_pipes);
 	free(map.room_end.room_index);
 	free(buf);
 	free(tmp);
+	free(map.map);
+	free(map.pipes);
 	free(map_cut);
 	free(map.path);
 	free(map.room);
